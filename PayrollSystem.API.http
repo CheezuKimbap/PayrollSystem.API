@@ -1,0 +1,55 @@
+@PayrollSystem.API_HostAddress = http://localhost:5073
+
+
+### Get all employees
+
+GET {{PayrollSystem.API_HostAddress}}/api/employee
+Accept: application/json
+
+
+### Get employee by ID
+
+GET {{PayrollSystem.API_HostAddress}}/api/employee/0EA5F074-52E2-40D4-A722-FB3B6DA21321
+Accept: application/json
+
+
+### Get employee by employee number
+########################################
+GET {{PayrollSystem.API_HostAddress}}/api/employee/by-employee-number/DOE-03453-12FEB2003
+Accept: application/json
+
+###
+
+
+### Create employee
+
+POST {{PayrollSystem.API_HostAddress}}/api/employee
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "middleName": "Marie",
+  "lastName": "Smith",
+  "dateOfBirth": "1994-05-17",
+  "dailyRate": 2000,
+  "workingDays": "MWF"
+}
+
+### Update employee
+
+PUT {{PayrollSystem.API_HostAddress}}/api/employee/0EA5F074-52E2-40D4-A722-FB3B6DA21321
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "middleName": "Johnson",
+  "lastName": "Daniels",
+  "dateOfBirth": "2003-02-12",
+  "dailyRate": 1200,
+  "workingDays": "MWF"
+}
+
+
+### Delete employee (soft delete)
+
+DELETE {{PayrollSystem.API_HostAddress}}/api/employee/0EA5F074-52E2-40D4-A722-FB3B6DA21321

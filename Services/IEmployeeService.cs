@@ -5,12 +5,12 @@ namespace PayrollSystem.API.Services
 {
     public interface IEmployeeService
     {
-        Task<Employee[]> GetAll();
-        Task<Employee?> GetById(Guid id);
-        Task<Employee?> GetByEmployeeNumber(string employeeNumber);
+        Task<EmployeeResultDto[]> GetAll();
+        Task<EmployeeResultDto?> GetById(Guid id);
+        Task<EmployeeResultDto?> GetByEmployeeNumber(string employeeNumber);
 
-        Task<EmployeeResultDto> Create(Employee employee);
-        Task<EmployeeResultDto> Update(Employee employee);
+        Task<EmployeeSummaryDto> Create(Employee employee);
+        Task<EmployeeSummaryDto> Update(Employee employee);
         Task Delete(Guid id);
         Task<PayrollResultDto> Compute(string EmployeeNumber, DateTime startDate, DateTime endDate);
 

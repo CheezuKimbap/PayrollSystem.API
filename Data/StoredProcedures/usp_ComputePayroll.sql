@@ -64,7 +64,7 @@ BEGIN
             SET @TotalPay += @DailyRate;
         END
         
-        ELSE IF (
+        IF (
             (@WorkingDays = 1 AND DATEPART(WEEKDAY, @CurrentDate) IN (1,3,5))
             OR
             (@WorkingDays = 2 AND DATEPART(WEEKDAY, @CurrentDate) IN (2,4,6))

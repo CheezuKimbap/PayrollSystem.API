@@ -2,7 +2,7 @@
 
 namespace PayrollSystem.API.Dtos
 {
-    public class CompuePayrollDto
+    public class ComputePayrollDto
     {       
         public DateTime StartingDate { get; set; }      
         public DateTime EndingDate {  get; set; }

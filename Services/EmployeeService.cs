@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PayrollSystem.API.Dtos;
 using PayrollSystem.API.Models;
 using PayrollSystem.API.Repositories;
+using PayrollSystem.API.Mapping;
 
 namespace PayrollSystem.API.Services
 {
@@ -14,22 +15,37 @@ namespace PayrollSystem.API.Services
             _employeeRepository = employeeRepository;        
         }
 
-        public async Task<Employee[]> GetAll()
+        public async Task<EmployeeResultDto[]> GetAll()
         {
-            return await _employeeRepository.GetAll();
+         
+            var employees = await _employeeRepository.GetAll();
+                        
+            return employees.Select(EmployeeMapper.ToResultDto).ToArray();
         }
 
-        public async Task<Employee?> GetById(Guid id)
+        public async Task<EmployeeResultDto?> GetById(Guid id)
         {
-            return await _employeeRepository.GetById(id);
+
+            var employee = await _employeeRepository.GetById(id);
+
+            if (employee == null)
+                return null;
+
+            return EmployeeMapper.ToResultDto(employee);
         }
 
-        public async Task<Employee?> GetByEmployeeNumber(string employeeNumber)
+        public async Task<EmployeeResultDto?> GetByEmployeeNumber(string employeeNumber)
         {
-            return await _employeeRepository.GetByEmployeeNumber(employeeNumber);
+
+            var employee = await _employeeRepository.GetByEmployeeNumber(employeeNumber);
+
+            if (employee == null)
+                return null;
+
+            return EmployeeMapper.ToResultDto(employee);
         }
 
-        public async Task<EmployeeResultDto> Create(Employee employee)
+        public async Task<EmployeeSummaryDto> Create(Employee employee)
         {
            
 
@@ -45,37 +61,27 @@ namespace PayrollSystem.API.Services
                 throw new InvalidOperationException("Employee already exists.");
             }
 
-            var result = await _employeeRepository.Create(employee);
-
-            return new EmployeeResultDto
-            {
-                Id = result.Id,
-                EmployeeNumber = result.EmployeeNumber
-            };           
+            return await _employeeRepository.Create(employee);
+                    
            
         }
 
-        public async Task<EmployeeResultDto> Update(Employee employee)
+        public async Task<EmployeeSummaryDto> Update(Employee employee)
         {
             if (employee.Id == Guid.Empty)
             {
                 throw new ArgumentException("Employee Id is required");
             }
-
-            
+                       
 
             var existing = await _employeeRepository.GetById(employee.Id);
 
             if (existing == null)
                 throw new InvalidOperationException("Employee not found");
             
-            var result = await _employeeRepository.Update(employee);
+            return await _employeeRepository.Update(employee);
 
-            return new EmployeeResultDto()
-            {
-                Id = result.Id,
-                EmployeeNumber = result.EmployeeNumber
-            };
+          
         }
 
         public async Task Delete(Guid id)

@@ -11,8 +11,8 @@ namespace PayrollSystem.API.Repositories
         Task<Employee[]> GetAll();
         
         
-        Task<EmployeeResultDto> Create(Employee employee);
-        Task<EmployeeResultDto> Update(Employee employee);
+        Task<EmployeeSummaryDto> Create(Employee employee);
+        Task<EmployeeSummaryDto> Update(Employee employee);
         Task Delete(Guid id);
         Task<bool> ExistsByLastNameAndDateOfBirth(Employee employee);
         Task<decimal> ComputePayroll(Guid id, DateTime startingDate, DateTime endingDate);

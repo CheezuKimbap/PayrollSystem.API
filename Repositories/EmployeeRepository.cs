@@ -61,7 +61,7 @@ namespace PayrollSystem.API.Repositories
             return employees.FirstOrDefault();
         }
 
-        public async Task<EmployeeResultDto> Create(Employee employee)
+        public async Task<EmployeeSummaryDto> Create(Employee employee)
         {
             string sql = @"EXEC usp_CreateEmployee @FirstName, @MiddleName, @LastName, @DateOfBirth, @DailyRate, @WorkingDays";
             var parameters = new[]
@@ -82,7 +82,7 @@ namespace PayrollSystem.API.Repositories
 
             return result;
         }
-        public async Task<EmployeeResultDto> Update(Employee employee)
+        public async Task<EmployeeSummaryDto> Update(Employee employee)
         {
             string sql = @"EXEC usp_UpdateEmployee @Id, @FirstName, @MiddleName, @LastName, @DateOfBirth, @DailyRate, @WorkingDays";
 

@@ -18,7 +18,7 @@ namespace PayrollSystem.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Employee[]>> GetAll()
+        public async Task<ActionResult<EmployeeResultDto[]>> GetAll()
         {
             var employees = await _employeeService.GetAll();
             return Ok(employees);
@@ -26,7 +26,7 @@ namespace PayrollSystem.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<Employee>> GetById(Guid id)
+        public async Task<ActionResult<EmployeeResultDto>> GetById(Guid id)
         {
             var employee = await _employeeService.GetById(id);
 
@@ -39,7 +39,7 @@ namespace PayrollSystem.API.Controllers
         }
 
         [HttpGet("by-employee-number/{employeeNumber}")]
-        public async Task<ActionResult> GetByEmployeeNumber(string employeeNumber)
+        public async Task<ActionResult<EmployeeResultDto>> GetByEmployeeNumber(string employeeNumber)
         {
             var employee = await _employeeService.GetByEmployeeNumber(employeeNumber);
 
@@ -52,7 +52,7 @@ namespace PayrollSystem.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Employee>> Create([FromBody] CreateEmployeeDto dto)
+        public async Task<ActionResult<EmployeeSummaryDto>> Create([FromBody] CreateEmployeeDto dto)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace PayrollSystem.API.Controllers
 
                 if (!Enum.TryParse<WorkingDays>(dto.WorkingDays.Trim(),out var workingDays))
                 {
-                    return BadRequest(new APIResponse<EmployeeResultDto>
+                    return BadRequest(new APIResponse<EmployeeSummaryDto>
                     {
                         Success = false,
                         Message = "WorkingDays must be either 'MWF' or 'TTHS'."
@@ -84,7 +84,7 @@ namespace PayrollSystem.API.Controllers
                 return CreatedAtAction(
                     nameof(GetById),
                     new { id = result.Id },
-                    new APIResponse<EmployeeResultDto>
+                    new APIResponse<EmployeeSummaryDto>
                     {
                         Success = true,
                         Message = "Employee created successfully",
@@ -94,7 +94,7 @@ namespace PayrollSystem.API.Controllers
             }          
             catch (InvalidOperationException ex)
             {
-                return NotFound(new APIResponse<EmployeeResultDto>
+                return NotFound(new APIResponse<EmployeeSummaryDto>
                 {
                     Success = false,
                     Message = ex.Message
@@ -102,7 +102,7 @@ namespace PayrollSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new APIResponse<EmployeeResultDto>
+                return BadRequest(new APIResponse<EmployeeSummaryDto>
                 {
                     Success = false,
                     Message = ex.Message
@@ -112,7 +112,7 @@ namespace PayrollSystem.API.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult<Employee>> Update(Guid id, [FromBody]  UpdateEmployeeDto dto)
+        public async Task<ActionResult<EmployeeSummaryDto>> Update(Guid id, [FromBody]  UpdateEmployeeDto dto)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace PayrollSystem.API.Controllers
                 };
 
                 var result = await _employeeService.Update(employee);
-                return Ok(new APIResponse<EmployeeResultDto>
+                return Ok(new APIResponse<EmployeeSummaryDto>
                 {
                     Success = true,
                     Message = "Employee updated successfully",
@@ -138,7 +138,7 @@ namespace PayrollSystem.API.Controllers
             catch (InvalidOperationException ex)
             {
 
-                return NotFound(new APIResponse<EmployeeResultDto>
+                return NotFound(new APIResponse<EmployeeSummaryDto>
                 {
                     Success = false,
                     Message = ex.Message
@@ -155,7 +155,7 @@ namespace PayrollSystem.API.Controllers
 
                 await _employeeService.Delete(id);
 
-                return Ok(new APIResponse<EmployeeResultDto>
+                return Ok(new APIResponse<EmployeeSummaryDto>
                 {
                     Success = true,
                     Message = "Employee deleted successfully",
@@ -173,7 +173,7 @@ namespace PayrollSystem.API.Controllers
         }
 
         [HttpGet("{employeeNumber}/compute")]
-        public async Task<IActionResult> ComputePayroll([FromRoute] string employeeNumber, [FromQuery] CompuePayrollDto dto) 
+        public async Task<IActionResult> ComputePayroll([FromRoute] string employeeNumber, [FromQuery] ComputePayrollDto dto) 
         { 
             try
             {                

@@ -11,7 +11,7 @@ namespace PayrollSystem.API.Data
         }
 
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<EmployeeResultDto> EmployeeResults { get; set; }
+        public DbSet<EmployeeSummaryDto> EmployeeResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

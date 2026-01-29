@@ -30,7 +30,7 @@ BEGIN
 	DECLARE @RandomDigits NVARCHAR(5);
 
 	SET @RandomDigits = RIGHT('00000' + CAST(ABS(CHECKSUM(NEWID())) % 100000 AS VARCHAR(5)), 5);
-	SET @EmployeeNumber = LEFT(UPPER(@LastName + 'XXX'), 3) + '-'  + @RandomDigits + '-' + UPPER(FORMAT(@DateOfBirth, 'ddMMMyyyy'));
+	SET @EmployeeNumber = LEFT(UPPER(@LastName + '***'), 3) + '-'  + @RandomDigits + '-' + UPPER(FORMAT(@DateOfBirth, 'ddMMMyyyy'));
 		
 	INSERT INTO tbl_Employee
 	(
